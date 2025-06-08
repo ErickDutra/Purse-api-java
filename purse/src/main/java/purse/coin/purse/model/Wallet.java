@@ -23,3 +23,4 @@ public class Wallet {
     private String idUser;
     private Date createdAt;
 }
+
