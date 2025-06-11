@@ -16,13 +16,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-public class Cripto {
+public class Crypto {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
-
-    private String simbol;
+    private String symbol;
     private BigDecimal valueUSD;
     private String name;
 }

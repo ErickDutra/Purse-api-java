@@ -20,9 +20,8 @@ public class Balance {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
-
     private String idWallet;
     private String idCripto;
     private BigDecimal amount;
-    private BigDecimal valueUSD;    
+    private BigDecimal valueUSD;
 }

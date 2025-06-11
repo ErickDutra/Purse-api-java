@@ -2,6 +2,7 @@ package purse.coin.purse.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
+    @Column(unique = true)
     private String idUser;
     private Date createdAt;
 }
