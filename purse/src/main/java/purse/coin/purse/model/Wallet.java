@@ -21,8 +21,9 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
-    @Column(unique = true)
     private String idUser;
+    @Column(unique = true)
+    private String address;
     private Date createdAt;
 }
 

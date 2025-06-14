@@ -3,17 +3,21 @@ package purse.coin.purse.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import purse.coin.purse.dto.BalanceDto;
 import purse.coin.purse.dto.LoginDto;
+import purse.coin.purse.dto.UserLoginDto;
 import purse.coin.purse.dto.UsersDto;
 import purse.coin.purse.model.Balance;
+import purse.coin.purse.model.Crypto;
 import purse.coin.purse.model.Users;
 import purse.coin.purse.model.Wallet;
 import purse.coin.purse.repository.BalanceRepository;
+import purse.coin.purse.repository.CryptoRepository;
 import purse.coin.purse.repository.UsersRepository;
 import purse.coin.purse.repository.WalletRepository;
 
@@ -23,11 +27,13 @@ public class UserService {
     UsersRepository usersRepository;
     BalanceRepository balanceRepository;
     WalletRepository walletRepository;
+    CryptoRepository cryptoRepository;
     public UserService(UsersRepository usersRepository, 
-            BalanceRepository balanceRepository, WalletRepository walletRepository) {
+            BalanceRepository balanceRepository, WalletRepository walletRepository, CryptoRepository cryptoRepository) {
         this.usersRepository = usersRepository;
         this.balanceRepository = balanceRepository; 
         this.walletRepository = walletRepository; 
+        this.cryptoRepository =cryptoRepository;
     }
 
     @Transactional
@@ -48,20 +54,24 @@ public class UserService {
         Wallet wallet = new Wallet();
         wallet.setIdUser(user.getId());
         wallet.setCreatedAt(new Date());
+        wallet.setAddress(UUID.randomUUID().toString());     
         walletRepository.save(wallet);
         Balance balance = new Balance();
         balance.setIdWallet(wallet.getId());
         balance.setAmount(BigDecimal.ZERO);
-        balance.setValueUSD(BigDecimal.ZERO);
         balance.setIdCripto("5dceac38-be39-4061-8d4c-4fab46628dc4");
         balanceRepository.save(balance);
         return usersDto;
     }
     
-        public UsersDto login(LoginDto loginDto) {
+        public UserLoginDto login(LoginDto loginDto) {
             Users user = usersRepository.findByEmail(loginDto.email());
             if (user != null && user.getPassword().equals(loginDto.password())) {
-                return new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf());
+                Wallet wallet = walletRepository.findByIdUser(user.getId());
+                if (wallet == null) {
+                    return null; // Wallet not found
+                }
+                return new UserLoginDto(user.getId(), user.getName(), user.getEmail(), wallet.getAddress());
             }
             return null;
         }
@@ -101,5 +111,8 @@ public class UserService {
                 .map(user -> new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf()))
                 .toList();
     }
+
+   
     
 }
+                       

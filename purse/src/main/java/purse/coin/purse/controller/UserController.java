@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import purse.coin.purse.dto.LoginDto;
+import purse.coin.purse.dto.UserLoginDto;
 import purse.coin.purse.dto.UsersDto;
 import purse.coin.purse.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +42,8 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<UsersDto> login(@RequestBody LoginDto loginDto) {
-        UsersDto user = userService.login(loginDto);
+    public ResponseEntity<UserLoginDto> login(@RequestBody LoginDto loginDto) {
+        UserLoginDto user = userService.login(loginDto);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); 
         }

@@ -23,5 +23,4 @@ public class Balance {
     private String idWallet;
     private String idCripto;
     private BigDecimal amount;
-    private BigDecimal valueUSD;
 }
