@@ -8,12 +8,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import purse.coin.purse.dto.BalanceDto;
 import purse.coin.purse.dto.LoginDto;
 import purse.coin.purse.dto.UserLoginDto;
 import purse.coin.purse.dto.UsersDto;
 import purse.coin.purse.model.Balance;
-import purse.coin.purse.model.Crypto;
 import purse.coin.purse.model.Users;
 import purse.coin.purse.model.Wallet;
 import purse.coin.purse.repository.BalanceRepository;
@@ -41,16 +39,13 @@ public class UserService {
         if (usersRepository.existsByEmail(usersDto.email())) {
             return null;
         }
-        if (usersRepository.existsByCpf(usersDto.cpf())) {
-            return null;
-        }
+
         Users user = new Users();
         user.setEmail(usersDto.email()); 
         user.setName(usersDto.name());
         user.setPassword(usersDto.password());
-        user.setCpf(usersDto.cpf());
         usersRepository.save(user);
-        usersDto = new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf());
+        usersDto = new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword());
         Wallet wallet = new Wallet();
         wallet.setIdUser(user.getId());
         wallet.setCreatedAt(new Date());
@@ -59,7 +54,7 @@ public class UserService {
         Balance balance = new Balance();
         balance.setIdWallet(wallet.getId());
         balance.setAmount(BigDecimal.ZERO);
-        balance.setIdCripto("5dceac38-be39-4061-8d4c-4fab46628dc4");
+        balance.setIdCrypto("5dceac38-be39-4061-8d4c-4fab46628dc4");
         balanceRepository.save(balance);
         return usersDto;
     }
@@ -69,7 +64,7 @@ public class UserService {
             if (user != null && user.getPassword().equals(loginDto.password())) {
                 Wallet wallet = walletRepository.findByIdUser(user.getId());
                 if (wallet == null) {
-                    return null; // Wallet not found
+                    return null;
                 }
                 return new UserLoginDto(user.getId(), user.getName(), user.getEmail(), wallet.getAddress());
             }
@@ -81,7 +76,7 @@ public class UserService {
         if (user == null) {
             return null;
         }
-        return new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf());
+        return new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
     public UsersDto updateUser(UsersDto usersDto) {
@@ -92,9 +87,8 @@ public class UserService {
         user.setName(usersDto.name());
         user.setEmail(usersDto.email());
         user.setPassword(usersDto.password());
-        user.setCpf(usersDto.cpf());
         usersRepository.save(user);
-        return new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf());
+        return new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
     public boolean deleteUser(String id) {
@@ -108,7 +102,7 @@ public class UserService {
     public List<UsersDto> getAllUsers() {
         List<Users> users = usersRepository.findAll();
         return users.stream()
-                .map(user -> new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCpf()))
+                .map(user -> new UsersDto(user.getId(), user.getName(), user.getEmail(), user.getPassword()))
                 .toList();
     }
 

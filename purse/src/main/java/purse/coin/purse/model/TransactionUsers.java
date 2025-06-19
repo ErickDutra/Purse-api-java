@@ -24,11 +24,10 @@ public class TransactionUsers {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
-
-    private String idWalletOrigin;
-    private String idWalletDestination;
+    private String idAddressOrigin;
+    private String idAddressDestination;
     private String idTransaction;
-    private String idCripto;
+    private String idCrypto;
     private BigDecimal amount;
     private BigDecimal tax;
     private Date date; 

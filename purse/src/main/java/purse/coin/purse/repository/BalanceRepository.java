@@ -9,5 +9,8 @@ import purse.coin.purse.model.Balance;
 
 @Repository
 public interface BalanceRepository extends JpaRepository<Balance, String> {
+    
     List<Balance> findAllByIdWallet(String idWallet);
+
+    Balance findByIdWalletAndIdCrypto(String idWallet, String idCrypto);
 }

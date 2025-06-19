@@ -5,8 +5,7 @@ public record UsersDto(
         String id, 
         String name, 
         String email, 
-        String password, 
-        String cpf
+        String password
 ) {
     
 }

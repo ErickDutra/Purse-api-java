@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import purse.coin.purse.model.Crypto;
 
+
+
 @Repository
 public interface CryptoRepository extends JpaRepository<Crypto, String> {
-    
+
 }

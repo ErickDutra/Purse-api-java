@@ -5,22 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import feign.Feign;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 import feign.slf4j.Slf4jLogger;
-import purse.coin.purse.integration.blockchain.InviteTransaction;
+import purse.coin.purse.integration.blockchain.AcceptTransactions;
 
 @Configuration
 public class AcceptTransactionConfig {
+
     @Bean
     @Lazy
-    public InviteTransaction inviteTransaction() {
+    public AcceptTransactions AcceptTransactions() {
         return Feign.builder()
-                .decoder(new JacksonDecoder())
-                .encoder(new JacksonEncoder())
-                .logger(new Slf4jLogger(InviteTransaction.class))
+                .decoder(new feign.jackson.JacksonDecoder())
+                .encoder(new feign.jackson.JacksonEncoder())
+                .logger(new Slf4jLogger(AcceptTransactions.class))
                 .logLevel(feign.Logger.Level.FULL)
-                .target(InviteTransaction.class, "http://localhost:8000");
+                .target(AcceptTransactions.class, "http://localhost:8000");
 
     }
 

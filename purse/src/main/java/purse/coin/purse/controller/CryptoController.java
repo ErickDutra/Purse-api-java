@@ -31,13 +31,12 @@ public class CryptoController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CryptoDto>> getCryptoById() {
+    public ResponseEntity<List<CryptoDto>> getAllCrypto() {
         List<CryptoDto> cryptoList = cryptoService.getAllCryptos();
-        if (cryptoList.isEmpty()) {
+        if (cryptoList.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(cryptoList);
-       
+        return ResponseEntity.ok(cryptoList);   
     }
 
     
